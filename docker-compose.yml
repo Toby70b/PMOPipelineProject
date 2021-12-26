@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  db:
+    image: pmo-pipeline-db:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: pmo_pipeline
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+    ports:
+      - 3306:3306
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - 5762:5672
+      - 15672:15672
+
+  employeeservice:
+    image: pmo_project_employee_service:latest
+    ports:
+      - 9091:9091
+    depends_on:
+      - rabbitmq
+      - db
+
